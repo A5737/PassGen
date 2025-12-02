@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مولد كلمات مرور حسب الاستخدام</title>
+
+<style>
+  :root {
+    --bg:#fff;
+    --text:#000;
+    --card:#f4f4f4;
+    --btn:#4CAF50;
+    --btn-hover:#43a047;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#1f1f1f;
+      --text:#fff;
+      --card:#2b2b2b;
+      --btn:#2ecc71;
+      --btn-hover:#27ae60;
+    }
+  }
+
+  body {
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial, sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:40px 10px;
+    transition:.3s;
+  }
+
+  h1 { margin-bottom:20px; }
+
+  .box {
+    background:var(--card);
+    padding:25px;
+    border-radius:14px;
+    width:100%;
+    max-width:420px;
+    box-shadow:0 0 15px #0003;
+    text-align:center;
+  }
+
+  input {
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    margin-bottom:15px;
+    background:var(--bg);
+    color:var(--text);
+    font-size:16px;
+    outline:none;
+  }
+
+  .btns {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  button {
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:var(--btn);
+    color:white;
+    font-size:17px;
+    transition:.3s;
+  }
+
+  button:hover { background:var(--btn-hover); }
+
+  .output {
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+    word-break:break-all;
+  }
+
+  footer {
+    margin-top:30px;
+    font-size:14px;
+  }
+
+  footer a {
+    color:var(--btn);
+    text-decoration:none;
+  }
+  footer a:hover { text-decoration:underline; }
+
+  .copied {
+    margin-top:10px;
+    font-size:14px;
+    color:var(--btn);
+  }
+</style>
+</head>
+
+<body>
+
+<h1>مولد كلمات مرور 🔑</h1>
+
+<div class="box">
+
+  <input id="username" type="text" placeholder="اكتب اسمك هنا">
+
+  <div class="btns">
+    <button onclick="generatePassword('social')">السوشيال ميديا</button>
+    <button onclick="generatePassword('web')">المواقع العامة</button>
+    <button onclick="generatePassword('strong')">قوية جداً</button>
+  </div>
+
+  <div class="output" id="password"></div>
+  <div class="copied" id="copied"></div>
+
+</div>
+
+<footer>
+تواصل:
+<a href="https://instagram.com/247.4" target="_blank">Instagram</a> |
+<a href="https://t.me/Upside2474" target="_blank">Telegram</a>
+</footer>
+
+<script>
+
+function generatePassword(type) {
+    let name = document.getElementById("username").value.trim();
+    let out = document.getElementById("password");
+    let copyMsg = document.getElementById("copied");
+
+    if (name === "") {
+        out.textContent = "اكتب اسمك أولاً";
+        copyMsg.textContent = "";
+        return;
+    }
+
+    name = name.toLowerCase();
+    let reversed = name.split("").reverse().join("");
+    let symbols = ["!", "@", "#", "$", "%", "&", "*", "?"];
+
+    let password = "";
+
+    if (type === "social") {
+        // سوشيال: بسيط + جميل
+        password =
+            name.charAt(0).toUpperCase() +
+            name.slice(1) +
+            symbols[Math.floor(Math.random()*symbols.length)] +
+            (Math.floor(Math.random()*900)+100);
+    }
+
+    else if (type === "web") {
+        // مواقع عامة: متوسط القوة
+        password =
+            name +
+            reversed +
+            symbols[Math.floor(Math.random()*symbols.length)] +
+            (Math.floor(Math.random()*9000)+1000);
+    }
+
+    else if (type === "strong") {
+        // قوية جداً: خليط قوي
+        let upper = name.toUpperCase();
+        let rand = Math.random().toString(36).slice(2,8);
+        password =
+            upper +
+            symbols[Math.floor(Math.random()*symbols.length)] +
+            reversed +
+            rand +
+            (Math.floor(Math.random()*90000)+10000);
+    }
+
+    // عرض كلمة المرور
+    out.textContent = password;
+
+    // نسخ تلقائي
+    navigator.clipboard.writeText(password)
+      .then(() => {
+        copyMsg.textContent = "تم النسخ تلقائياً ✓";
+        setTimeout(() => copyMsg.textContent = "", 2000);
+      });
+}
+
+</script>
+
+</body>
+</html>
